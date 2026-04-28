@@ -1,6 +1,9 @@
 require('dotenv').config();
 const { Telegraf, Markup } = require('telegraf');
 const fs = require('fs');
+const express = require('express');
+const { Telegraf, Markup } = require('telegraf');
+const fs = require('fs');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -457,6 +460,18 @@ Si tienes dudas sobre el proceso, el broker, el depósito o el acceso a LatinPip
 });
 
 // ================= LAUNCH =================
+
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Bot LatinPips activo 🚀');
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Servidor web activo en puerto ${PORT}`);
+});
 
 bot.launch().then(() => {
   console.log('Bot LatinPips optimizado activo 🚀');
