@@ -1,0 +1,41 @@
+[
+  {
+    "id": "comunidad-teamPips",
+    "name": "Comunidad Gratuita TeamPips",
+    "price": 0,
+    "currency": "USD",
+    "tags": ["comunidad","clases","live","señales","copy-trading"],
+    "desc": "Acceso a clases, Live Trading, Señales y Copy Trading tras alta en Broker Vantage."
+  },
+  {
+    "id": "adi",
+    "name": "ADI Indicador",
+    "price": 0,
+    "currency": "USD",
+    "tags": ["indicador","herramienta","adi"],
+    "desc": "Indicador/Asistente Dirección Inteligente.",
+    "plans": [
+      {"code":"mensual","label":"Mensual","price":97},
+      {"code":"trimestral","label":"Trimestral","price":247},
+      {"code":"semestral","label":"Semestral","price":497},
+      {"code":"anual","label":"Anual","price":797},
+      {"code":"vitalicio","label":"Vitalicio","price":1197}
+    ]
+  },
+  {
+    "id": "mentoria",
+    "name": "Mentoría Personalizada",
+    "price": 0,
+    "currency": "USD",
+    "tags": ["mentoria","1a1","coaching"],
+    "desc": "Mentoría por horas ($150/h) o paquetes mensuales ($2,000) / 3 meses ($5,000)."
+  },
+  {
+    "id": "copy-adi",
+    "name": "Copy Trading ADI",
+    "price": 0,
+    "currency": "USD",
+    "tags": ["copy-trading","adi","gestión"],
+    "desc": "Acceso a Copy Trading ADI/ADIVOT. Requisitos y riesgos explicados antes de activar."
+  }
+]

@@ -1,0 +1,101 @@
+[
+  {
+    "chatId": 752557204,
+    "user": "Esaú",
+    "username": "Fxesaubecerra",
+    "interest": "LatinPips",
+    "stage": "vio_info_latinpips",
+    "ts": "2026-04-28T06:05:06.319Z"
+  },
+  {
+    "chatId": 752557204,
+    "user": "Esaú",
+    "username": "Fxesaubecerra",
+    "interest": "LatinPips",
+    "stage": "inicio_verificacion",
+    "ts": "2026-04-28T06:05:26.307Z"
+  },
+  {
+    "chatId": 752557204,
+    "user": "Esaú",
+    "username": "Fxesaubecerra",
+    "interest": "LatinPips",
+    "stage": "email_recibido",
+    "email": "esaub@fxebc.com",
+    "ts": "2026-04-28T06:06:00.689Z"
+  },
+  {
+    "chatId": 752557204,
+    "user": "Esaú",
+    "username": "Fxesaubecerra",
+    "interest": "LatinPips",
+    "stage": "verificacion_enviada",
+    "email": "esaub@fxebc.com",
+    "screenshot": "AgACAgEAAxkBAAMyafBOUaSqpE45vZ5nf6P8lC2FDtcAAvULaxvBsIFHI75E9m6uoGwBAAMCAAN3AAM7BA",
+    "ts": "2026-04-28T06:06:09.205Z"
+  },
+  {
+    "chatId": 752557204,
+    "user": "Esaú",
+    "username": "Fxesaubecerra",
+    "interest": "ADI 2.0 Indicador",
+    "stage": "solicita_info",
+    "ts": "2026-04-28T06:06:20.962Z"
+  },
+  {
+    "chatId": 752557204,
+    "user": "Esaú",
+    "username": "Fxesaubecerra",
+    "interest": "ADI 2.0 Indicador",
+    "stage": "solicita_info",
+    "ts": "2026-04-28T06:06:27.327Z"
+  },
+  {
+    "chatId": 752557204,
+    "user": "Esaú",
+    "username": "Fxesaubecerra",
+    "interest": "Mentoría 1 a 1",
+    "stage": "solicita_info",
+    "ts": "2026-04-28T06:06:31.963Z"
+  },
+  {
+    "chatId": 752557204,
+    "user": "Esaú",
+    "username": "Fxesaubecerra",
+    "interest": "Inicio",
+    "stage": "confirmado",
+    "ts": "2026-04-28T06:19:58.565Z"
+  },
+  {
+    "chatId": 752557204,
+    "user": "Esaú",
+    "username": "Fxesaubecerra",
+    "interest": "Inicio",
+    "stage": "confirmado",
+    "ts": "2026-04-28T06:30:46.627Z"
+  },
+  {
+    "chatId": 752557204,
+    "user": "Esaú",
+    "username": "Fxesaubecerra",
+    "interest": "LatinPips",
+    "stage": "vio_intro_latinpips",
+    "ts": "2026-04-28T06:31:05.874Z"
+  },
+  {
+    "chatId": 752557204,
+    "user": "Esaú",
+    "username": "Fxesaubecerra",
+    "interest": "LatinPips",
+    "stage": "vio_beneficios",
+    "ts": "2026-04-28T06:31:30.701Z"
+  },
+  {
+    "chatId": 752557204,
+    "user": "Esaú",
+    "username": "Fxesaubecerra",
+    "interest": "Soporte",
+    "stage": "solicito_soporte",
+    "ts": "2026-04-28T06:32:02.388Z"
+  }
+]
