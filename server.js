@@ -21,14 +21,6 @@ function getState(chatId) {
   return state.get(chatId) || {};
 }
 
-function loadLeads() {
-  try {
-    return JSON.parse(fs.readFileSync('./leads.json', 'utf8'));
-  } catch {
-    return [];
-  }
-}
-
 function saveLead(lead) {
   const all = loadLeads();
   const item = { ...lead, ts: new Date().toISOString() };
@@ -37,21 +29,21 @@ function saveLead(lead) {
   fs.writeFileSync('./leads.json', JSON.stringify(all, null, 2));
 
   const importantStages = [
-  'verificacion_enviada',
-  'solicito_soporte'
-];
+    'verificacion_enviada',
+    'solicito_soporte'
+  ];
 
-if (importantStages.includes(item.stage)) {
-  saveLeadToGoogleSheets(item);
-}
+  if (importantStages.includes(item.stage)) {
+    saveLeadToGoogleSheets(item);
+  }
 
   const adminId = process.env.ADMIN_CHAT_ID;
 
-if (adminId && importantStages.includes(item.stage)) {
-let msg = '';
+  if (adminId && importantStages.includes(item.stage)) {
+    let msg = '';
 
-if (item.stage === 'verificacion_enviada') {
-  msg =
+    if (item.stage === 'verificacion_enviada') {
+      msg =
 `📸 Nueva solicitud de acceso LatinPips
 
 👤 Usuario: ${item.user || '-'}
@@ -59,24 +51,25 @@ if (item.stage === 'verificacion_enviada') {
 📧 Email: ${item.email || '-'}
 🆔 Chat ID: ${item.chatId || '-'}
 📌 Estado: Pendiente validación`;
-}
+    }
 
-if (item.stage === 'solicito_soporte') {
-  msg =
+    if (item.stage === 'solicito_soporte') {
+      msg =
 `💬 Nueva solicitud de soporte
 
 👤 Usuario: ${item.user || '-'}
 🔗 Username: ${item.username ? '@' + item.username : 'sin username'}
 📝 Mensaje: ${item.message || '-'}
 🆔 Chat ID: ${item.chatId || '-'}`;
-}
+    }
 
-if (msg) {
-  bot.telegram.sendMessage(adminId, msg).catch(err => {
-    console.error('Error enviando notificación:', err.message);
-  });
+    if (msg) {
+      bot.telegram.sendMessage(adminId, msg).catch(err => {
+        console.error('Error enviando notificación:', err.message);
+      });
+    }
+  }
 }
-
 async function saveLeadToGoogleSheets(lead) {
   try {
     if (!process.env.GOOGLE_SHEET_ID || !process.env.GOOGLE_CLIENT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY) {
