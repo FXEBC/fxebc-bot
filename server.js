@@ -36,28 +36,45 @@ function saveLead(lead) {
   all.push(item);
   fs.writeFileSync('./leads.json', JSON.stringify(all, null, 2));
 
+  const importantStages = [
+  'verificacion_enviada',
+  'solicito_soporte'
+];
+
+if (importantStages.includes(item.stage)) {
   saveLeadToGoogleSheets(item);
+}
 
   const adminId = process.env.ADMIN_CHAT_ID;
 
-  if (adminId) {
-    const msg =
-`📥 Nuevo lead / actualización
+if (adminId && importantStages.includes(item.stage)) {
+let msg = '';
 
-Usuario: ${lead.user || '-'}
-Username: ${lead.username ? '@' + lead.username : 'sin username'}
-Interés: ${lead.interest || '-'}
-Etapa: ${lead.stage || '-'}
-Email: ${lead.email || '-'}
-Mensaje: ${lead.message || '-'}
-Chat ID: ${lead.chatId || '-'}
-Pantallazo: ${lead.screenshot ? 'Sí' : 'No'}
-🕒 ${item.ts}`;
+if (item.stage === 'verificacion_enviada') {
+  msg =
+`📸 Nueva solicitud de acceso LatinPips
 
-    bot.telegram.sendMessage(adminId, msg).catch(err => {
-      console.error('Error enviando notificación:', err.message);
-    });
-  }
+👤 Usuario: ${item.user || '-'}
+🔗 Username: ${item.username ? '@' + item.username : 'sin username'}
+📧 Email: ${item.email || '-'}
+🆔 Chat ID: ${item.chatId || '-'}
+📌 Estado: Pendiente validación`;
+}
+
+if (item.stage === 'solicito_soporte') {
+  msg =
+`💬 Nueva solicitud de soporte
+
+👤 Usuario: ${item.user || '-'}
+🔗 Username: ${item.username ? '@' + item.username : 'sin username'}
+📝 Mensaje: ${item.message || '-'}
+🆔 Chat ID: ${item.chatId || '-'}`;
+}
+
+if (msg) {
+  bot.telegram.sendMessage(adminId, msg).catch(err => {
+    console.error('Error enviando notificación:', err.message);
+  });
 }
 
 async function saveLeadToGoogleSheets(lead) {
