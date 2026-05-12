@@ -7,7 +7,7 @@ const express = require('express');
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 const BROKER_LINK = 'https://broker.invidiatrade.com/register?referral=019d31a1-d1e2-7260-8a19-105d633941a5';
-const RESULTS_LINK = 'https://latinpips.com';
+const RESULTS_LINK = 'https://latinpips.com/resultados';
 const SUPPORT_LINK = 'https://wa.me/523344407253';
 const GROUP_LINK = 'https://t.me/+Tkqb2dWntl5lNjUx';
 
@@ -208,7 +208,15 @@ bot.action('benefits', ctx => {
   });
 
   ctx.editMessageText(
-`🚀 Accede a LatinPips
+`Excelente elección 🚀
+
+Estás a un paso de acceder a tu beca dentro de LatinPips.
+
+Abajo encontrarás los niveles de acceso disponibles según el depósito realizado en nuestro broker aliado.
+
+Después de revisar los niveles, puedes usar el botón inferior para crear tu cuenta, verificarla y realizar tu depósito.
+
+━━━━━━━━━━━━━━
 
 ACCESO NIVEL 1
 Desde $300 USD
@@ -237,10 +245,10 @@ Todo lo anterior +
 • Plan de trading personalizado
 • Estrategia para escalar tu cuenta`,
     Markup.inlineKeyboard([
-      [Markup.button.url('🔗 Registrarme en el broker aliado', BROKER_LINK)],
+      [Markup.button.url('🔗 Crear cuenta en el broker aliado', BROKER_LINK)],
       [Markup.button.callback('✅ Ya tengo cuenta y depósito listo', 'ready')],
       [Markup.button.url('📊 Ver resultados reales', RESULTS_LINK)],
-      [Markup.button.callback('💬 Soporte', 'support')],
+      [Markup.button.callback('💬 Necesito ayuda', 'support')],
       [Markup.button.callback('⬅️ Volver', 'confirm')]
     ])
   );
@@ -364,15 +372,18 @@ bot.on('photo', ctx => {
 
 Recibimos tu información correctamente.
 
-Puedes solicitar acceso desde ahora a nuestra comunidad privada:
+Ya puedes solicitar acceso a nuestra comunidad privada aquí:
 
 ${GROUP_LINK}
 
 Nuestro equipo verificará tu registro y depósito.
 
 Si todo está correcto, tu solicitud será aprobada dentro de las próximas 24 horas y tendrás acceso completo a los servicios correspondientes a tu nivel.`,
-      mainMenu
-    );
+  Markup.inlineKeyboard([
+    [Markup.button.url('🔐 Solicitar acceso al grupo privado', GROUP_LINK)],
+    [Markup.button.callback('💬 Necesito ayuda', 'support')]
+  ])
+);
 
     const adminId = process.env.ADMIN_CHAT_ID;
 
