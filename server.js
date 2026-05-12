@@ -21,6 +21,14 @@ function getState(chatId) {
   return state.get(chatId) || {};
 }
 
+function loadLeads() {
+  try {
+    return JSON.parse(fs.readFileSync('./leads.json', 'utf8'));
+  } catch {
+    return [];
+  }
+}
+
 function saveLead(lead) {
   const all = loadLeads();
   const item = { ...lead, ts: new Date().toISOString() };
