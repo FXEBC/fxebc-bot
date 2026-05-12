@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { Telegraf, Markup } = require('telegraf');
 const fs = require('fs');
+const { google } = require('googleapis');
 const express = require('express');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -20,20 +21,14 @@ function getState(chatId) {
   return state.get(chatId) || {};
 }
 
-function loadLeads() {
-  try {
-    return JSON.parse(fs.readFileSync('./leads.json', 'utf8'));
-  } catch {
-    return [];
-  }
-}
-
 function saveLead(lead) {
   const all = loadLeads();
   const item = { ...lead, ts: new Date().toISOString() };
 
   all.push(item);
   fs.writeFileSync('./leads.json', JSON.stringify(all, null, 2));
+
+  saveLeadToGoogleSheets(item);
 
   const adminId = process.env.ADMIN_CHAT_ID;
 
@@ -54,6 +49,46 @@ Pantallazo: ${lead.screenshot ? 'Sí' : 'No'}
     bot.telegram.sendMessage(adminId, msg).catch(err => {
       console.error('Error enviando notificación:', err.message);
     });
+  }
+}
+
+async function saveLeadToGoogleSheets(lead) {
+  try {
+    if (!process.env.GOOGLE_SHEET_ID || !process.env.GOOGLE_CLIENT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY) {
+      console.log('Google Sheets no configurado');
+      return;
+    }
+
+    const auth = new google.auth.JWT({
+      email: process.env.GOOGLE_CLIENT_EMAIL,
+      key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      scopes: ['https://www.googleapis.com/auth/spreadsheets']
+    });
+
+    const sheets = google.sheets({ version: 'v4', auth });
+
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: process.env.GOOGLE_SHEET_ID,
+      range: 'A:I',
+      valueInputOption: 'USER_ENTERED',
+      requestBody: {
+        values: [[
+          new Date().toISOString(),
+          lead.user || '',
+          lead.username ? '@' + lead.username : '',
+          lead.chatId || '',
+          lead.stage || '',
+          lead.email || '',
+          lead.message || '',
+          lead.screenshot || '',
+          'Pendiente'
+        ]]
+      }
+    });
+
+    console.log('Lead guardado en Google Sheets ✅');
+  } catch (err) {
+    console.error('Error guardando en Google Sheets:', err.message);
   }
 }
 
