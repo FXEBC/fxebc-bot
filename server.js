@@ -12,6 +12,65 @@ const SUPPORT_LINK = 'https://wa.me/523344407253';
 const GROUP_LINK = 'https://t.me/+Tkqb2dWntl5lNjUx';
 
 const state = new Map();
+const followUpTimers = new Map();
+
+function clearFollowUps(chatId) {
+  const timers = followUpTimers.get(chatId) || [];
+  timers.forEach(timer => clearTimeout(timer));
+  followUpTimers.delete(chatId);
+}
+
+function scheduleFollowUps(ctx) {
+  const chatId = ctx.chat.id;
+
+  clearFollowUps(chatId);
+
+  const followUps = [
+    {
+      delay: 60 * 60 * 1000,
+      message:
+`👋 Vi que empezaste tu proceso para acceder a LatinPips, pero aún no lo terminaste.
+
+Si todavía quieres acceder a señales, sesiones en vivo, comunidad privada y herramientas de trading, puedes continuar aquí 👇`
+    },
+    {
+      delay: 3 * 60 * 60 * 1000,
+      message:
+`⏳ Tu acceso a LatinPips sigue pendiente.
+
+Recuerda: para activar tu beca solo necesitas:
+
+1. Crear y verificar tu cuenta
+2. Depositar desde $300 USD
+3. Enviar tu correo y pantallazo
+
+Puedes continuar desde el menú 👇`
+    },
+    {
+      delay: 12 * 60 * 60 * 1000,
+      message:
+`🔥 Último recordatorio.
+
+Si realmente quieres operar con más estructura, señales y acompañamiento, completa tu proceso de acceso a LatinPips.
+
+Cuando tengas tu cuenta y depósito listos, vuelve aquí y continúa 👇`
+    }
+  ];
+
+  const timers = followUps.map(followUp =>
+    setTimeout(() => {
+      const st = getState(chatId);
+
+      if (st.verified === true) return;
+
+      bot.telegram.sendMessage(chatId, followUp.message, mainMenu).catch(err => {
+        console.error('Error enviando follow-up:', err.message);
+      });
+    }, followUp.delay)
+  );
+
+  followUpTimers.set(chatId, timers);
+}
 
 function setState(chatId, patch) {
   state.set(chatId, { ...(state.get(chatId) || {}), ...patch });
@@ -161,6 +220,13 @@ bot.action('confirm', async ctx => {
       stage: 'confirmado'
     });
 
+setState(ctx.chat.id, {
+  flow: 'latinpips',
+  verified: false
+});
+
+scheduleFollowUps(ctx);
+
     await ctx.editMessageText(
 `Perfecto. Bienvenido a LatinPips.
 
@@ -206,6 +272,8 @@ bot.action('benefits', ctx => {
     interest: 'LatinPips',
     stage: 'vio_beneficios'
   });
+
+scheduleFollowUps(ctx);
 
   ctx.editMessageText(
 `Excelente elección 🚀
@@ -363,9 +431,12 @@ bot.on('photo', ctx => {
     });
 
     setState(ctx.chat.id, {
-      step: null,
-      screenshot: fileId
-    });
+  step: null,
+  screenshot: fileId,
+  verified: true
+});
+
+clearFollowUps(ctx.chat.id);
 
     ctx.reply(
 `🔥 Perfecto.
